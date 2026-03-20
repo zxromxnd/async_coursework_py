@@ -1,0 +1,14 @@
+[project]
+name = "async_coursework_py"
+version = "0.1.0"
+description = "Асинхронна система обробки та моніторингу задач"
+authors = [
+    {name = "Євген Брюховецький", email = "zhenyabruhovetsky@gmail.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
