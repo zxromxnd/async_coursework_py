@@ -1,11 +1,14 @@
 from src.events import EventEmitter
+from src.logging_tools import log
 
 
 class TaskProcessor:
     def __init__(self):
         self.events = EventEmitter()
 
+    @log(level="INFO")
     def process(self, task, handler):
+        """Process task with logging."""
         self.events.emit("task_started", task)
 
         try:
