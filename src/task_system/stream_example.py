@@ -1,4 +1,5 @@
 import asyncio
+import os
 from src.streams import AsyncLineIterator
 from src.task_system import Task, TaskProcessor
 
@@ -22,10 +23,10 @@ processor.events.on("task_finished", on_finished)
 async def process_tasks_from_file(filepath):
     """Create and process tasks from file."""
     print(f"Reading tasks from {filepath}\n")
-    
+
     iterator = AsyncLineIterator(filepath)
     task_id = 1
-    
+
     async for line in iterator:
         if line.strip():
             task = Task(
@@ -34,17 +35,25 @@ async def process_tasks_from_file(filepath):
                 priority=task_id,
                 data={"text": line}
             )
-            
+
             processor.process(task, lambda t: process_line(t))
             task_id += 1
 
 
 print("Creating sample task file...\n")
-with open("tasks.txt", "w") as f:
-    f.write("first task\n")
-    f.write("second task\n")
-    f.write("third task\n")
 
-asyncio.run(process_tasks_from_file("tasks.txt"))
+sample_file = "tasks.txt"
 
-print("\nAll tasks from file processed!")
+try:
+    with open(sample_file, "w", encoding="utf-8") as file:
+        file.write("first task\n")
+        file.write("second task\n")
+        file.write("third task\n")
+
+    asyncio.run(process_tasks_from_file(sample_file))
+
+    print("\nAll tasks from file processed!")
+
+finally:
+    if os.path.exists(sample_file):
+        os.remove(sample_file)
